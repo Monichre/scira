@@ -22,23 +22,6 @@ import {
 import Exa from 'exa-js'
 import { z } from 'zod'
 
-// Added block to validate environment variables at startup
-const requiredEnvVars = [
-    { key: 'SANDBOX_TEMPLATE_ID', value: serverEnv.SANDBOX_TEMPLATE_ID },
-    { key: 'TAVILY_API_KEY', value: serverEnv.TAVILY_API_KEY },
-    { key: 'EXA_API_KEY', value: serverEnv.EXA_API_KEY },
-    { key: 'FIRECRAWL_API_KEY', value: serverEnv.FIRECRAWL_API_KEY },
-    { key: 'GOOGLE_MAPS_API_KEY', value: serverEnv.GOOGLE_MAPS_API_KEY },
-    { key: 'MAPBOX_ACCESS_TOKEN', value: serverEnv.MAPBOX_ACCESS_TOKEN },
-
-]
-
-requiredEnvVars.forEach( ( envVar ) => {
-    if ( !envVar.value || envVar.value.trim() === "" ) {
-        // throw new Error( `Missing or empty environment variable: ${envVar.key}` )
-    }
-} )
-
 const scira = customProvider( {
     languageModels: {
         'scira-default': xai( 'grok-2-1212' ),
@@ -411,7 +394,7 @@ export async function POST( req: Request ) {
                                                 const sanitizedUrl = sanitizeUrl( url )
                                                 return ( await isValidImageUrl( sanitizedUrl ) ) ? sanitizedUrl : null
                                             } ),
-                                        )
+                                        ).then( ( results ) => results.filter( ( url ): url is string => url !== null ) ),
                                 }
                             } )
 
@@ -486,9 +469,6 @@ export async function POST( req: Request ) {
                             query: z.string().describe( 'The search query for movies/TV shows' ),
                         } ),
                         execute: async ( { query }: { query: string } ) => {
-                            if ( !serverEnv.TMDB_API_KEY ) {
-                                // throw new Error( "TMDB service unavailable: TMDB_API_KEY is not set." )
-                            }
                             const TMDB_API_KEY = serverEnv.TMDB_API_KEY
                             const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 
@@ -579,9 +559,6 @@ export async function POST( req: Request ) {
                         description: 'Get trending movies from TMDB',
                         parameters: z.object( {} ),
                         execute: async () => {
-                            if ( !serverEnv.TMDB_API_KEY ) {
-                                // throw new Error( "TMDB service unavailable: TMDB_API_KEY is not set." )
-                            }
                             const TMDB_API_KEY = serverEnv.TMDB_API_KEY
                             const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 
@@ -615,9 +592,6 @@ export async function POST( req: Request ) {
                         description: 'Get trending TV shows from TMDB',
                         parameters: z.object( {} ),
                         execute: async () => {
-                            if ( !serverEnv.TMDB_API_KEY ) {
-                                // throw new Error( "TMDB service unavailable: TMDB_API_KEY is not set." )
-                            }
                             const TMDB_API_KEY = serverEnv.TMDB_API_KEY
                             const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 
@@ -705,9 +679,6 @@ export async function POST( req: Request ) {
                             no_of_results: z.number().default( 5 ).describe( 'The number of results to return' ),
                         } ),
                         execute: async ( { query, no_of_results }: { query: string; no_of_results: number } ) => {
-                            if ( !serverEnv.YT_ENDPOINT ) {
-                                // throw new Error( "YouTube service unavailable: YT_ENDPOINT is not set." )
-                            }
                             try {
                                 const exa = new Exa( serverEnv.EXA_API_KEY as string )
 
@@ -858,9 +829,6 @@ export async function POST( req: Request ) {
                             lon: z.number().describe( 'The longitude of the location.' ),
                         } ),
                         execute: async ( { lat, lon }: { lat: number; lon: number } ) => {
-                            if ( !serverEnv.OPENWEATHER_API_KEY ) {
-                                // throw new Error( "Weather service unavailable: OPENWEATHER_API_KEY is not set." )
-                            }
                             const apiKey = serverEnv.OPENWEATHER_API_KEY
                             const response = await fetch(
                                 `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`,
@@ -1041,7 +1009,7 @@ export async function POST( req: Request ) {
                                         Math.pow( placeLng - centerLng, 2 ) + Math.pow( placeLat - centerLat, 2 ),
                                     )
                                     return distance <= radiusInDegrees
-                                }
+                                } )
                             }
 
                             return {
@@ -1082,9 +1050,6 @@ export async function POST( req: Request ) {
                             type: string
                             radius: number
                         } ) => {
-                            if ( !serverEnv.TRIPADVISOR_API_KEY ) {
-                                // throw new Error( "TripAdvisor service unavailable: TRIPADVISOR_API_KEY is not set." )
-                            }
                             const apiKey = serverEnv.TRIPADVISOR_API_KEY
                             let finalLat = latitude
                             let finalLng = longitude
@@ -1123,7 +1088,7 @@ export async function POST( req: Request ) {
                                 )
 
                                 if ( !nearbyResponse.ok ) {
-                                    // throw new Error( `Nearby search failed: ${nearbyResponse.status}` )
+                                    throw new Error( `Nearby search failed: ${nearbyResponse.status}` )
                                 }
 
                                 const nearbyData = await nearbyResponse.json()
@@ -1318,7 +1283,7 @@ export async function POST( req: Request ) {
                                 // Filter and sort results
                                 const validPlaces = detailedPlaces
                                     .filter( ( place ) => place !== null )
-                                    .sort( ( a, b ) => ( a?.distance || 0 ) - ( b?.distance || 0 )
+                                    .sort( ( a, b ) => ( a?.distance || 0 ) - ( b?.distance || 0 ) )
 
                                 return {
                                     results: validPlaces,
@@ -1336,9 +1301,6 @@ export async function POST( req: Request ) {
                             flight_number: z.string().describe( 'The flight number to track' ),
                         } ),
                         execute: async ( { flight_number }: { flight_number: string } ) => {
-                            if ( !serverEnv.AVIATION_STACK_API_KEY ) {
-                                // throw new Error( "Flight tracking service unavailable: AVIATION_STACK_API_KEY is not set." )
-                            }
                             try {
                                 const response = await fetch(
                                     `https://api.aviationstack.com/v1/flights?access_key=${serverEnv.AVIATION_STACK_API_KEY}&flight_iata=${flight_number}`,
