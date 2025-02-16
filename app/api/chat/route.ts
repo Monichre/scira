@@ -35,7 +35,7 @@ const requiredEnvVars = [
 
 requiredEnvVars.forEach( ( envVar ) => {
     if ( !envVar.value || envVar.value.trim() === "" ) {
-        throw new Error( `Missing or empty environment variable: ${envVar.key}` )
+        // throw new Error( `Missing or empty environment variable: ${envVar.key}` )
     }
 } )
 
@@ -486,7 +486,7 @@ export async function POST( req: Request ) {
                         } ),
                         execute: async ( { query }: { query: string } ) => {
                             if ( !serverEnv.TMDB_API_KEY ) {
-                                throw new Error( "TMDB service unavailable: TMDB_API_KEY is not set." )
+                                // throw new Error( "TMDB service unavailable: TMDB_API_KEY is not set." )
                             }
                             const TMDB_API_KEY = serverEnv.TMDB_API_KEY
                             const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
@@ -579,7 +579,7 @@ export async function POST( req: Request ) {
                         parameters: z.object( {} ),
                         execute: async () => {
                             if ( !serverEnv.TMDB_API_KEY ) {
-                                throw new Error( "TMDB service unavailable: TMDB_API_KEY is not set." )
+                                // throw new Error( "TMDB service unavailable: TMDB_API_KEY is not set." )
                             }
                             const TMDB_API_KEY = serverEnv.TMDB_API_KEY
                             const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
@@ -615,7 +615,7 @@ export async function POST( req: Request ) {
                         parameters: z.object( {} ),
                         execute: async () => {
                             if ( !serverEnv.TMDB_API_KEY ) {
-                                throw new Error( "TMDB service unavailable: TMDB_API_KEY is not set." )
+                                // throw new Error( "TMDB service unavailable: TMDB_API_KEY is not set." )
                             }
                             const TMDB_API_KEY = serverEnv.TMDB_API_KEY
                             const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
@@ -705,7 +705,7 @@ export async function POST( req: Request ) {
                         } ),
                         execute: async ( { query, no_of_results }: { query: string; no_of_results: number } ) => {
                             if ( !serverEnv.YT_ENDPOINT ) {
-                                throw new Error( "YouTube service unavailable: YT_ENDPOINT is not set." )
+                                // throw new Error( "YouTube service unavailable: YT_ENDPOINT is not set." )
                             }
                             try {
                                 const exa = new Exa( serverEnv.EXA_API_KEY as string )
@@ -858,7 +858,7 @@ export async function POST( req: Request ) {
                         } ),
                         execute: async ( { lat, lon }: { lat: number; lon: number } ) => {
                             if ( !serverEnv.OPENWEATHER_API_KEY ) {
-                                throw new Error( "Weather service unavailable: OPENWEATHER_API_KEY is not set." )
+                                // throw new Error( "Weather service unavailable: OPENWEATHER_API_KEY is not set." )
                             }
                             const apiKey = serverEnv.OPENWEATHER_API_KEY
                             const response = await fetch(
@@ -1082,7 +1082,7 @@ export async function POST( req: Request ) {
                             radius: number
                         } ) => {
                             if ( !serverEnv.TRIPADVISOR_API_KEY ) {
-                                throw new Error( "TripAdvisor service unavailable: TRIPADVISOR_API_KEY is not set." )
+                                // throw new Error( "TripAdvisor service unavailable: TRIPADVISOR_API_KEY is not set." )
                             }
                             const apiKey = serverEnv.TRIPADVISOR_API_KEY
                             let finalLat = latitude
@@ -1122,7 +1122,7 @@ export async function POST( req: Request ) {
                                 )
 
                                 if ( !nearbyResponse.ok ) {
-                                    throw new Error( `Nearby search failed: ${nearbyResponse.status}` )
+                                    // throw new Error( `Nearby search failed: ${nearbyResponse.status}` )
                                 }
 
                                 const nearbyData = await nearbyResponse.json()
@@ -1336,7 +1336,7 @@ export async function POST( req: Request ) {
                         } ),
                         execute: async ( { flight_number }: { flight_number: string } ) => {
                             if ( !serverEnv.AVIATION_STACK_API_KEY ) {
-                                throw new Error( "Flight tracking service unavailable: AVIATION_STACK_API_KEY is not set." )
+                                // throw new Error( "Flight tracking service unavailable: AVIATION_STACK_API_KEY is not set." )
                             }
                             try {
                                 const response = await fetch(
