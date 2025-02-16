@@ -16,7 +16,7 @@ export const serverEnv = createEnv( {
     UPSTASH_REDIS_REST_TOKEN: z.string().min( 1 ),
     ELEVENLABS_API_KEY: z.string().min( 1 ),
     TAVILY_API_KEY: z.string().min( 1 ),
-    // EXA_API_KEY: z.string().min(1),
+    EXA_API_KEY: z.string().min( 1 ),
     // TMDB_API_KEY: z.string().min(1),
     // YT_ENDPOINT: z.string().min(1),
     FIRECRAWL_API_KEY: z.string().min( 1 ),
