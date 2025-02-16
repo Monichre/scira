@@ -559,7 +559,7 @@ export async function POST( req: Request ) {
                         description: 'Get trending movies from TMDB',
                         parameters: z.object( {} ),
                         execute: async () => {
-                            const TMDB_API_KEY = serverEnv.TMDB_API_KEY
+                            const TMDB_API_KEY = '' //serverEnv.TMDB_API_KEY
                             const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 
                             try {
@@ -592,7 +592,7 @@ export async function POST( req: Request ) {
                         description: 'Get trending TV shows from TMDB',
                         parameters: z.object( {} ),
                         execute: async () => {
-                            const TMDB_API_KEY = serverEnv.TMDB_API_KEY
+                            const TMDB_API_KEY = '' //serverEnv.TMDB_API_KEY
                             const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 
                             try {
