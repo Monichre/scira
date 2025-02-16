@@ -1,47 +1,47 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
-import 'katex/dist/katex.min.css';
+"use client"
+import 'katex/dist/katex.min.css'
 
-import { BorderTrail } from '@/components/core/border-trail';
-import { TextShimmer } from '@/components/core/text-shimmer';
-import { FlightTracker } from '@/components/flight-tracker';
-import { InstallPrompt } from '@/components/InstallPrompt';
-import InteractiveChart from '@/components/interactive-charts';
-import { MapComponent, MapContainer } from '@/components/map-components';
-import TMDBResult from '@/components/movie-info';
-import MultiSearch from '@/components/multi-search';
-import NearbySearchMapView from '@/components/nearby-search-map-view';
-import TrendingResults from '@/components/trending-tv-movies-results';
+import { BorderTrail } from '@/components/core/border-trail'
+import { TextShimmer } from '@/components/core/text-shimmer'
+import { FlightTracker } from '@/components/flight-tracker'
+import { InstallPrompt } from '@/components/InstallPrompt'
+import InteractiveChart from '@/components/interactive-charts'
+import { MapComponent, MapContainer } from '@/components/map-components'
+import TMDBResult from '@/components/movie-info'
+import MultiSearch from '@/components/multi-search'
+import NearbySearchMapView from '@/components/nearby-search-map-view'
+import TrendingResults from '@/components/trending-tv-movies-results'
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/accordion"
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
     Card,
     CardContent,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/components/ui/tooltip";
-import WeatherChart from '@/components/weather-chart';
-import { useMediaQuery } from '@/hooks/use-media-query';
-import { cn, SearchGroupId } from '@/lib/utils';
-import { Wave } from "@foobar404/wave";
-import { CheckCircle, CurrencyDollar, Flag, GithubLogo, Info, RoadHorizon, SoccerBall, TennisBall, XLogo } from '@phosphor-icons/react';
-import { TextIcon } from '@radix-ui/react-icons';
-import { ToolInvocation } from 'ai';
-import { useChat, UseChatOptions } from 'ai/react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { GeistMono } from 'geist/font/mono';
+} from "@/components/ui/tooltip"
+import WeatherChart from '@/components/weather-chart'
+import { useMediaQuery } from '@/hooks/use-media-query'
+import { cn, SearchGroupId } from '@/lib/utils'
+import { Wave } from "@foobar404/wave"
+import { CheckCircle, CurrencyDollar, Flag, GithubLogo, Info, RoadHorizon, SoccerBall, TennisBall, XLogo } from '@phosphor-icons/react'
+import { TextIcon } from '@radix-ui/react-icons'
+import { ToolInvocation } from 'ai'
+import { useChat, UseChatOptions } from 'ai/react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { GeistMono } from 'geist/font/mono'
 import {
     AlignLeft,
     ArrowRight,
@@ -83,12 +83,12 @@ import {
     X,
     YoutubeIcon,
     Zap
-} from 'lucide-react';
-import Marked, { ReactRenderer } from 'marked-react';
-import { useTheme } from 'next-themes';
-import Image from 'next/image';
-import Link from 'next/link';
-import { parseAsString, useQueryState } from 'nuqs';
+} from 'lucide-react'
+import Marked, { ReactRenderer } from 'marked-react'
+import { useTheme } from 'next-themes'
+import Image from 'next/image'
+import Link from 'next/link'
+import { parseAsString, useQueryState } from 'nuqs'
 import React, {
     memo,
     Suspense,
@@ -97,28 +97,28 @@ import React, {
     useMemo,
     useRef,
     useState
-} from 'react';
-import Latex from 'react-latex-next';
-import ReactMarkdown from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark, vs } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Tweet } from 'react-tweet';
-import { toast } from 'sonner';
+} from 'react'
+import Latex from 'react-latex-next'
+import ReactMarkdown from 'react-markdown'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { atomDark, vs } from 'react-syntax-highlighter/dist/cjs/styles/prism'
+import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import { Tweet } from 'react-tweet'
+import { toast } from 'sonner'
 import {
     fetchMetadata,
     generateSpeech,
     suggestQuestions
-} from './actions';
-import { TrendingQuery } from './api/trending/route';
-import InteractiveStockChart from '@/components/interactive-stock-chart';
-import { CurrencyConverter } from '@/components/currency_conv';
-import { ReasoningUIPart, ToolInvocationUIPart, TextUIPart } from '@ai-sdk/ui-utils';
+} from './actions'
+import { TrendingQuery } from './api/trending/route'
+import InteractiveStockChart from '@/components/interactive-stock-chart'
+import { CurrencyConverter } from '@/components/currency_conv'
+import { ReasoningUIPart, ToolInvocationUIPart, TextUIPart } from '@ai-sdk/ui-utils'
 import {
     Dialog,
     DialogContent,
     DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
     Drawer,
     DrawerClose,
@@ -127,48 +127,49 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
-} from "@/components/ui/drawer";
-import FormComponent from '@/components/ui/form-component';
+} from "@/components/ui/drawer"
+import FormComponent from '@/components/ui/form-component'
 import {
     HoverCard,
     HoverCardContent,
     HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import ReasonSearch from '@/components/reason-search';
-import type { StreamUpdate } from '@/components/reason-search';
+} from "@/components/ui/hover-card"
+import { Input } from '@/components/ui/input'
+import { Separator } from '@/components/ui/separator'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import ReasonSearch from '@/components/reason-search'
+import type { StreamUpdate } from '@/components/reason-search'
+import { UserButton } from '@clerk/nextjs'
 
-export const maxDuration = 120;
+export const maxDuration = 120
 
 interface Attachment {
-    name: string;
-    contentType: string;
-    url: string;
-    size: number;
+    name: string
+    contentType: string
+    url: string
+    size: number
 }
 
 interface XResult {
-    id: string;
-    url: string;
-    title: string;
-    author?: string;
-    publishedDate?: string;
-    text: string;
-    highlights?: string[];
-    tweetId: string;
+    id: string
+    url: string
+    title: string
+    author?: string
+    publishedDate?: string
+    text: string
+    highlights?: string[]
+    tweetId: string
 }
 
 interface AcademicResult {
-    title: string;
-    url: string;
-    author?: string | null;
-    publishedDate?: string;
-    summary: string;
+    title: string
+    url: string
+    author?: string | null
+    publishedDate?: string
+    summary: string
 }
 
-const SearchLoadingState = ({
+const SearchLoadingState = ( {
     icon: Icon,
     text,
     color
@@ -176,7 +177,7 @@ const SearchLoadingState = ({
     icon: LucideIcon,
     text: string,
     color: "red" | "green" | "orange" | "violet" | "gray" | "blue"
-}) => {
+} ) => {
     const colorVariants = {
         red: {
             background: "bg-red-50 dark:bg-red-950",
@@ -214,9 +215,9 @@ const SearchLoadingState = ({
             text: "text-blue-500",
             icon: "text-blue-500"
         }
-    };
+    }
 
-    const variant = colorVariants[color];
+    const variant = colorVariants[color]
 
     return (
         <Card className="relative w-full h-[100px] my-4 overflow-hidden shadow-none">
@@ -241,7 +242,7 @@ const SearchLoadingState = ({
                                 )}
                                 size={40}
                             />
-                            <Icon className={cn("h-5 w-5", variant.icon)} />
+                            <Icon className={cn( "h-5 w-5", variant.icon )} />
                         </div>
                         <div className="space-y-2">
                             <TextShimmer
@@ -251,7 +252,7 @@ const SearchLoadingState = ({
                                 {text}
                             </TextShimmer>
                             <div className="flex gap-2">
-                                {[...Array(3)].map((_, i) => (
+                                {[...Array( 3 )].map( ( _, i ) => (
                                     <div
                                         key={i}
                                         className="h-1.5 rounded-full bg-neutral-200 dark:bg-neutral-700 animate-pulse"
@@ -260,46 +261,46 @@ const SearchLoadingState = ({
                                             animationDelay: `${i * 0.2}s`
                                         }}
                                     />
-                                ))}
+                                ) )}
                             </div>
                         </div>
                     </div>
                 </div>
             </CardContent>
         </Card>
-    );
-};
+    )
+}
 
 interface VideoDetails {
-    title?: string;
-    author_name?: string;
-    author_url?: string;
-    thumbnail_url?: string;
-    type?: string;
-    provider_name?: string;
-    provider_url?: string;
-    height?: number;
-    width?: number;
+    title?: string
+    author_name?: string
+    author_url?: string
+    thumbnail_url?: string
+    type?: string
+    provider_name?: string
+    provider_url?: string
+    height?: number
+    width?: number
 }
 
 interface VideoResult {
-    videoId: string;
-    url: string;
-    details?: VideoDetails;
-    captions?: string;
-    timestamps?: string[];
-    views?: string;
-    likes?: string;
-    summary?: string;
+    videoId: string
+    url: string
+    details?: VideoDetails
+    captions?: string
+    timestamps?: string[]
+    views?: string
+    likes?: string
+    summary?: string
 }
 
 interface YouTubeSearchResponse {
-    results: VideoResult[];
+    results: VideoResult[]
 }
 
 interface YouTubeCardProps {
-    video: VideoResult;
-    index: number;
+    video: VideoResult
+    index: number
 }
 
 const PeerlistLogo = () => {
@@ -328,10 +329,10 @@ const PeerlistLogo = () => {
                 strokeLinejoin="round"
             />
         </svg>
-    );
-};
+    )
+}
 
-const VercelIcon = ({ size = 16 }: { size: number }) => {
+const VercelIcon = ( { size = 16 }: { size: number } ) => {
     return (
         <svg
             height={size}
@@ -347,14 +348,14 @@ const VercelIcon = ({ size = 16 }: { size: number }) => {
                 fill="currentColor"
             ></path>
         </svg>
-    );
-};
+    )
+}
 
-const TooltipButton = ({ href, tooltip, children }: {
-    href: string;
-    tooltip: string;
-    children: React.ReactNode;
-}) => {
+const TooltipButton = ( { href, tooltip, children }: {
+    href: string
+    tooltip: string
+    children: React.ReactNode
+} ) => {
     return (
         <Tooltip delayDuration={0}>
             <TooltipTrigger asChild>
@@ -374,10 +375,10 @@ const TooltipButton = ({ href, tooltip, children }: {
                 {tooltip}
             </TooltipContent>
         </Tooltip>
-    );
-};
+    )
+}
 
-const XAIIcon = ({ size = 16 }: { size: number }) => {
+const XAIIcon = ( { size = 16 }: { size: number } ) => {
     return (
         <svg
             height={size}
@@ -393,7 +394,7 @@ const XAIIcon = ({ size = 16 }: { size: number }) => {
                 fill={'currentColor'}
             ></path>
         </svg>
-    );
+    )
 }
 
 const IconMapping: Record<string, LucideIcon> = {
@@ -402,44 +403,44 @@ const IconMapping: Record<string, LucideIcon> = {
     date: Calendar,
     calculation: Calculator,
     output: FileText
-};
-
-interface CollapsibleSectionProps {
-    code: string;
-    output?: string;
-    language?: string;
-    title?: string;
-    icon?: string;
-    status?: 'running' | 'completed';
 }
 
-function CollapsibleSection({
+interface CollapsibleSectionProps {
+    code: string
+    output?: string
+    language?: string
+    title?: string
+    icon?: string
+    status?: 'running' | 'completed'
+}
+
+function CollapsibleSection( {
     code,
     output,
     language = "plaintext",
     title,
     icon,
     status,
-}: CollapsibleSectionProps) {
-    const [copied, setCopied] = React.useState(false);
-    const [isExpanded, setIsExpanded] = React.useState(true);
-    const [activeTab, setActiveTab] = React.useState<'code' | 'output'>('code');
-    const { theme } = useTheme();
-    const IconComponent = icon ? IconMapping[icon] : null;
+}: CollapsibleSectionProps ) {
+    const [copied, setCopied] = React.useState( false )
+    const [isExpanded, setIsExpanded] = React.useState( true )
+    const [activeTab, setActiveTab] = React.useState<'code' | 'output'>( 'code' )
+    const { theme } = useTheme()
+    const IconComponent = icon ? IconMapping[icon] : null
 
-    const handleCopy = async (e: React.MouseEvent) => {
-        e.stopPropagation();
-        const textToCopy = activeTab === 'code' ? code : output;
-        await navigator.clipboard.writeText(textToCopy || '');
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
+    const handleCopy = async ( e: React.MouseEvent ) => {
+        e.stopPropagation()
+        const textToCopy = activeTab === 'code' ? code : output
+        await navigator.clipboard.writeText( textToCopy || '' )
+        setCopied( true )
+        setTimeout( () => setCopied( false ), 2000 )
+    }
 
     return (
         <div className="group rounded-lg border border-neutral-200 dark:border-neutral-800 overflow-hidden transition-all duration-200 hover:shadow-sm">
             <div
                 className="flex items-center justify-between px-4 py-3 cursor-pointer bg-white dark:bg-neutral-900 transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
-                onClick={() => setIsExpanded(!isExpanded)}
+                onClick={() => setIsExpanded( !isExpanded )}
             >
                 <div className="flex items-center gap-3">
                     {IconComponent && (
@@ -489,7 +490,7 @@ function CollapsibleSection({
                                     ? "border-b-2 border-primary text-primary"
                                     : "text-neutral-600 dark:text-neutral-400"
                             )}
-                            onClick={() => setActiveTab('code')}
+                            onClick={() => setActiveTab( 'code' )}
                         >
                             Code
                         </button>
@@ -501,7 +502,7 @@ function CollapsibleSection({
                                         ? "border-b-2 border-primary text-primary"
                                         : "text-neutral-600 dark:text-neutral-400"
                                 )}
-                                onClick={() => setActiveTab('output')}
+                                onClick={() => setActiveTab( 'output' )}
                             >
                                 Output
                             </button>
@@ -542,14 +543,14 @@ function CollapsibleSection({
                 </div>
             )}
         </div>
-    );
+    )
 }
 
-const YouTubeCard: React.FC<YouTubeCardProps> = ({ video, index }) => {
-    const [timestampsExpanded, setTimestampsExpanded] = useState(false);
-    const [transcriptExpanded, setTranscriptExpanded] = useState(false);
+const YouTubeCard: React.FC<YouTubeCardProps> = ( { video, index } ) => {
+    const [timestampsExpanded, setTimestampsExpanded] = useState( false )
+    const [transcriptExpanded, setTranscriptExpanded] = useState( false )
 
-    if (!video) return null;
+    if ( !video ) return null
 
     return (
         <motion.div
@@ -609,7 +610,7 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({ video, index }) => {
                     )}
                 </div>
 
-                {(video.timestamps && video.timestamps?.length > 0 || video.captions) && (
+                {( video.timestamps && video.timestamps?.length > 0 || video.captions ) && (
                     <div className="space-y-3">
                         <Separator />
 
@@ -620,7 +621,7 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({ video, index }) => {
                                     <Button
                                         variant="ghost"
                                         size="sm"
-                                        onClick={() => setTimestampsExpanded(!timestampsExpanded)}
+                                        onClick={() => setTimestampsExpanded( !timestampsExpanded )}
                                         className="h-6 px-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800"
                                     >
                                         {timestampsExpanded ? 'Show Less' : `Show All (${video.timestamps.length})`}
@@ -631,15 +632,15 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({ video, index }) => {
                                     timestampsExpanded ? "max-h-[300px] overflow-y-auto" : "max-h-[72px]"
                                 )}>
                                     {video.timestamps
-                                        .slice(0, timestampsExpanded ? undefined : 3)
-                                        .map((timestamp, i) => (
+                                        .slice( 0, timestampsExpanded ? undefined : 3 )
+                                        .map( ( timestamp, i ) => (
                                             <div
                                                 key={i}
                                                 className="text-xs dark:text-neutral-400 text-neutral-600 line-clamp-1"
                                             >
                                                 {timestamp}
                                             </div>
-                                        ))}
+                                        ) )}
                                 </div>
                             </div>
                         )}
@@ -653,7 +654,7 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({ video, index }) => {
                                         <Button
                                             variant="ghost"
                                             size="sm"
-                                            onClick={() => setTranscriptExpanded(!transcriptExpanded)}
+                                            onClick={() => setTranscriptExpanded( !transcriptExpanded )}
                                             className="h-6 px-2 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800"
                                         >
                                             {transcriptExpanded ? 'Hide' : 'Show'}
@@ -673,170 +674,170 @@ const YouTubeCard: React.FC<YouTubeCardProps> = ({ video, index }) => {
                 )}
             </div>
         </motion.div>
-    );
-};
+    )
+}
 
 const HomeContent = () => {
-    const [query] = useQueryState('query', parseAsString.withDefault(''))
-    const [q] = useQueryState('q', parseAsString.withDefault(''))
-    const [model] = useQueryState('model', parseAsString.withDefault('scira-default'))
+    const [query] = useQueryState( 'query', parseAsString.withDefault( '' ) )
+    const [q] = useQueryState( 'q', parseAsString.withDefault( '' ) )
+    const [model] = useQueryState( 'model', parseAsString.withDefault( 'scira-default' ) )
 
 
 
-    const initialState = useMemo(() => ({
+    const initialState = useMemo( () => ( {
         query: query || q,
         model: model
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }), []);
+    } ), [] )
 
-    const lastSubmittedQueryRef = useRef(initialState.query);
-    const [hasSubmitted, setHasSubmitted] = useState(() => !!initialState.query);
-    const [selectedModel, setSelectedModel] = useState(initialState.model);
-    const bottomRef = useRef<HTMLDivElement>(null);
-    const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
-    const [isEditingMessage, setIsEditingMessage] = useState(false);
-    const [editingMessageIndex, setEditingMessageIndex] = useState(-1);
-    const [attachments, setAttachments] = useState<Attachment[]>([]);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const inputRef = useRef<HTMLTextAreaElement>(null);
-    const initializedRef = useRef(false);
-    const [selectedGroup, setSelectedGroup] = useState<SearchGroupId>('web');
-    const [researchUpdates, setResearchUpdates] = useState<StreamUpdate[]>([]);
+    const lastSubmittedQueryRef = useRef( initialState.query )
+    const [hasSubmitted, setHasSubmitted] = useState( () => !!initialState.query )
+    const [selectedModel, setSelectedModel] = useState( initialState.model )
+    const bottomRef = useRef<HTMLDivElement>( null )
+    const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>( [] )
+    const [isEditingMessage, setIsEditingMessage] = useState( false )
+    const [editingMessageIndex, setEditingMessageIndex] = useState( -1 )
+    const [attachments, setAttachments] = useState<Attachment[]>( [] )
+    const fileInputRef = useRef<HTMLInputElement>( null )
+    const inputRef = useRef<HTMLTextAreaElement>( null )
+    const initializedRef = useRef( false )
+    const [selectedGroup, setSelectedGroup] = useState<SearchGroupId>( 'web' )
+    const [researchUpdates, setResearchUpdates] = useState<StreamUpdate[]>( [] )
 
-    const CACHE_KEY = 'trendingQueriesCache';
-    const CACHE_DURATION = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
+    const CACHE_KEY = 'trendingQueriesCache'
+    const CACHE_DURATION = 5 * 60 * 60 * 1000 // 5 hours in milliseconds
 
     interface TrendingQueriesCache {
-        data: TrendingQuery[];
-        timestamp: number;
+        data: TrendingQuery[]
+        timestamp: number
     }
 
     const getTrendingQueriesFromCache = (): TrendingQueriesCache | null => {
-        if (typeof window === 'undefined') return null;
+        if ( typeof window === 'undefined' ) return null
 
-        const cached = localStorage.getItem(CACHE_KEY);
-        if (!cached) return null;
+        const cached = localStorage.getItem( CACHE_KEY )
+        if ( !cached ) return null
 
-        const parsedCache = JSON.parse(cached) as TrendingQueriesCache;
-        const now = Date.now();
+        const parsedCache = JSON.parse( cached ) as TrendingQueriesCache
+        const now = Date.now()
 
-        if (now - parsedCache.timestamp > CACHE_DURATION) {
-            localStorage.removeItem(CACHE_KEY);
-            return null;
+        if ( now - parsedCache.timestamp > CACHE_DURATION ) {
+            localStorage.removeItem( CACHE_KEY )
+            return null
         }
 
-        return parsedCache;
-    };
+        return parsedCache
+    }
 
-    useEffect(() => {
-        console.log("selectedModel", selectedModel);
-    }, [selectedModel]);
+    useEffect( () => {
+        console.log( "selectedModel", selectedModel )
+    }, [selectedModel] )
 
-    const [trendingQueries, setTrendingQueries] = useState<TrendingQuery[]>([]);
+    const [trendingQueries, setTrendingQueries] = useState<TrendingQuery[]>( [] )
 
-    const chatOptions: UseChatOptions = useMemo(() => ({
+    const chatOptions: UseChatOptions = useMemo( () => ( {
         maxSteps: 5,
         experimental_throttle: 500,
         body: {
             model: selectedModel,
             group: selectedGroup,
         },
-        onFinish: async (message, { finishReason }) => {
-            console.log("[finish reason]:", finishReason);
-            if (message.content && (finishReason === 'stop' || finishReason === 'length')) {
+        onFinish: async ( message, { finishReason } ) => {
+            console.log( "[finish reason]:", finishReason )
+            if ( message.content && ( finishReason === 'stop' || finishReason === 'length' ) ) {
                 const newHistory = [
                     { role: "user", content: lastSubmittedQueryRef.current },
                     { role: "assistant", content: message.content },
-                ];
-                const { questions } = await suggestQuestions(newHistory);
-                setSuggestedQuestions(questions);
+                ]
+                const { questions } = await suggestQuestions( newHistory )
+                setSuggestedQuestions( questions )
             }
         },
-        onError: (error) => {
-            console.error("Chat error:", error.cause, error.message);
-            toast.error("An error occurred.", {
+        onError: ( error ) => {
+            console.error( "Chat error:", error.cause, error.message )
+            toast.error( "An error occurred.", {
                 description: `Oops! An error occurred while processing your request. ${error.message}`,
-            });
+            } )
         },
-    }), [selectedModel, selectedGroup]);
+    } ), [selectedModel, selectedGroup] )
 
-    const { isLoading, input, messages, setInput, append, handleSubmit, setMessages, reload, stop, data, setData } = useChat(chatOptions);
+    const { isLoading, input, messages, setInput, append, handleSubmit, setMessages, reload, stop, data, setData } = useChat( chatOptions )
 
-    useEffect(() => {
-        if (!initializedRef.current && initialState.query && !messages.length) {
-            initializedRef.current = true;
-            setHasSubmitted(true);
-            console.log("[initial query]:", initialState.query);
-            append({
+    useEffect( () => {
+        if ( !initializedRef.current && initialState.query && !messages.length ) {
+            initializedRef.current = true
+            setHasSubmitted( true )
+            console.log( "[initial query]:", initialState.query )
+            append( {
                 content: initialState.query,
                 role: 'user'
-            });
+            } )
         }
-    }, [initialState.query, append, setInput, messages.length]);
+    }, [initialState.query, append, setInput, messages.length] )
 
-    useEffect(() => {
+    useEffect( () => {
         const fetchTrending = async () => {
-            const cached = getTrendingQueriesFromCache();
-            if (cached) {
-                setTrendingQueries(cached.data);
-                return;
+            const cached = getTrendingQueriesFromCache()
+            if ( cached ) {
+                setTrendingQueries( cached.data )
+                return
             }
 
             try {
-                const res = await fetch('/api/trending');
-                if (!res.ok) throw new Error('Failed to fetch trending queries');
-                const data = await res.json();
+                const res = await fetch( '/api/trending' )
+                if ( !res.ok ) throw new Error( 'Failed to fetch trending queries' )
+                const data = await res.json()
 
                 const cacheData: TrendingQueriesCache = {
                     data,
                     timestamp: Date.now()
-                };
-                localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+                }
+                localStorage.setItem( CACHE_KEY, JSON.stringify( cacheData ) )
 
-                setTrendingQueries(data);
-            } catch (error) {
-                console.error('Error fetching trending queries:', error);
-                setTrendingQueries([]);
+                setTrendingQueries( data )
+            } catch ( error ) {
+                console.error( 'Error fetching trending queries:', error )
+                setTrendingQueries( [] )
             }
-        };
+        }
 
-        fetchTrending();
+        fetchTrending()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [] )
 
     const ThemeToggle: React.FC = () => {
-        const { theme, setTheme } = useTheme();
+        const { theme, setTheme } = useTheme()
 
         return (
             <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                onClick={() => setTheme( theme === 'dark' ? 'light' : 'dark' )}
                 className="bg-transparent hover:bg-neutral-100 dark:hover:bg-neutral-800"
             >
                 <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                 <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                 <span className="sr-only">Toggle theme</span>
             </Button>
-        );
-    };
+        )
+    }
 
 
-    const CopyButton = ({ text }: { text: string }) => {
-        const [isCopied, setIsCopied] = useState(false);
+    const CopyButton = ( { text }: { text: string } ) => {
+        const [isCopied, setIsCopied] = useState( false )
 
         return (
             <Button
                 variant="ghost"
                 size="sm"
                 onClick={async () => {
-                    if (!navigator.clipboard) {
-                        return;
+                    if ( !navigator.clipboard ) {
+                        return
                     }
-                    await navigator.clipboard.writeText(text);
-                    setIsCopied(true);
-                    setTimeout(() => setIsCopied(false), 2000);
-                    toast.success("Copied to clipboard");
+                    await navigator.clipboard.writeText( text )
+                    setIsCopied( true )
+                    setTimeout( () => setIsCopied( false ), 2000 )
+                    toast.success( "Copied to clipboard" )
                 }}
                 className="h-8 px-2 text-xs rounded-full"
             >
@@ -846,64 +847,64 @@ const HomeContent = () => {
                     <Copy className="h-4 w-4" />
                 )}
             </Button>
-        );
-    };
+        )
+    }
 
     interface MarkdownRendererProps {
-        content: string;
+        content: string
     }
 
     interface CitationLink {
-        text: string;
-        link: string;
+        text: string
+        link: string
     }
 
     interface LinkMetadata {
-        title: string;
-        description: string;
+        title: string
+        description: string
     }
 
-    const isValidUrl = (str: string) => {
+    const isValidUrl = ( str: string ) => {
         try {
-            new URL(str);
-            return true;
+            new URL( str )
+            return true
         } catch {
-            return false;
+            return false
         }
-    };
+    }
 
-    const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
-        const [metadataCache, setMetadataCache] = useState<Record<string, LinkMetadata>>({});
+    const MarkdownRenderer: React.FC<MarkdownRendererProps> = ( { content } ) => {
+        const [metadataCache, setMetadataCache] = useState<Record<string, LinkMetadata>>( {} )
 
-        const citationLinks = useMemo<CitationLink[]>(() => {
-            return Array.from(content.matchAll(/\[([^\]]+)\]\(([^)]+)\)/g)).map(([_, text, link]) => ({ text, link }));
-        }, [content]);
+        const citationLinks = useMemo<CitationLink[]>( () => {
+            return Array.from( content.matchAll( /\[([^\]]+)\]\(([^)]+)\)/g ) ).map( ( [_, text, link] ) => ( { text, link } ) )
+        }, [content] )
 
-        const fetchMetadataWithCache = useCallback(async (url: string) => {
-            if (metadataCache[url]) {
-                return metadataCache[url];
+        const fetchMetadataWithCache = useCallback( async ( url: string ) => {
+            if ( metadataCache[url] ) {
+                return metadataCache[url]
             }
-            const metadata = await fetchMetadata(url);
-            if (metadata) {
-                setMetadataCache(prev => ({ ...prev, [url]: metadata }));
+            const metadata = await fetchMetadata( url )
+            if ( metadata ) {
+                setMetadataCache( prev => ( { ...prev, [url]: metadata } ) )
             }
-            return metadata;
-        }, [metadataCache]);
+            return metadata
+        }, [metadataCache] )
 
         interface CodeBlockProps {
-            language: string | undefined;
-            children: string;
+            language: string | undefined
+            children: string
         }
 
-        const CodeBlock = React.memo(({ language, children }: CodeBlockProps) => {
-            const [isCopied, setIsCopied] = useState(false);
-            const { theme } = useTheme();
+        const CodeBlock = React.memo( ( { language, children }: CodeBlockProps ) => {
+            const [isCopied, setIsCopied] = useState( false )
+            const { theme } = useTheme()
 
-            const handleCopy = useCallback(async () => {
-                await navigator.clipboard.writeText(children);
-                setIsCopied(true);
-                setTimeout(() => setIsCopied(false), 2000);
-            }, [children]);
+            const handleCopy = useCallback( async () => {
+                await navigator.clipboard.writeText( children )
+                setIsCopied( true )
+                setTimeout( () => setIsCopied( false ), 2000 )
+            }, [children] )
 
             return (
                 <div className="group my-3">
@@ -972,35 +973,35 @@ const HomeContent = () => {
                         </div>
                     </div>
                 </div>
-            );
-        }, (prevProps, nextProps) =>
+            )
+        }, ( prevProps, nextProps ) =>
             prevProps.children === nextProps.children &&
             prevProps.language === nextProps.language
-        );
+        )
 
-        CodeBlock.displayName = 'CodeBlock';
+        CodeBlock.displayName = 'CodeBlock'
 
-        const LinkPreview = ({ href }: { href: string }) => {
-            const [metadata, setMetadata] = useState<LinkMetadata | null>(null);
-            const [isLoading, setIsLoading] = useState(false);
+        const LinkPreview = ( { href }: { href: string } ) => {
+            const [metadata, setMetadata] = useState<LinkMetadata | null>( null )
+            const [isLoading, setIsLoading] = useState( false )
 
-            React.useEffect(() => {
-                setIsLoading(true);
-                fetchMetadataWithCache(href).then((data) => {
-                    setMetadata(data);
-                    setIsLoading(false);
-                });
-            }, [href]);
+            React.useEffect( () => {
+                setIsLoading( true )
+                fetchMetadataWithCache( href ).then( ( data ) => {
+                    setMetadata( data )
+                    setIsLoading( false )
+                } )
+            }, [href] )
 
-            if (isLoading) {
+            if ( isLoading ) {
                 return (
                     <div className="flex items-center justify-center p-4">
                         <Loader2 className="h-5 w-5 animate-spin text-neutral-500 dark:text-neutral-400" />
                     </div>
-                );
+                )
             }
 
-            const domain = new URL(href).hostname;
+            const domain = new URL( href ).hostname
 
             return (
                 <div className="flex flex-col space-y-2 bg-white dark:bg-neutral-800 rounded-md shadow-md overflow-hidden">
@@ -1025,10 +1026,10 @@ const HomeContent = () => {
                         )}
                     </div>
                 </div>
-            );
-        };
+            )
+        }
 
-        const renderHoverCard = (href: string, text: React.ReactNode, isCitation: boolean = false) => {
+        const renderHoverCard = ( href: string, text: React.ReactNode, isCitation: boolean = false ) => {
             return (
                 <HoverCard>
                     <HoverCardTrigger asChild>
@@ -1049,12 +1050,12 @@ const HomeContent = () => {
                         <LinkPreview href={href} />
                     </HoverCardContent>
                 </HoverCard>
-            );
-        };
+            )
+        }
 
         const renderer: Partial<ReactRenderer> = {
-            text(text: string) {
-                if (!text.includes('$')) return text;
+            text( text: string ) {
+                if ( !text.includes( '$' ) ) return text
                 return (
                     <Latex
                         delimiters={[
@@ -1064,10 +1065,10 @@ const HomeContent = () => {
                     >
                         {text}
                     </Latex>
-                );
+                )
             },
-            paragraph(children) {
-                if (typeof children === 'string' && children.includes('$')) {
+            paragraph( children ) {
+                if ( typeof children === 'string' && children.includes( '$' ) ) {
                     return (
                         <p className="my-4">
                             <Latex
@@ -1079,123 +1080,123 @@ const HomeContent = () => {
                                 {children}
                             </Latex>
                         </p>
-                    );
+                    )
                 }
-                return <p className="my-4">{children}</p>;
+                return <p className="my-4">{children}</p>
             },
-            code(children, language) {
-                return <CodeBlock language={language}>{String(children)}</CodeBlock>;
+            code( children, language ) {
+                return <CodeBlock language={language}>{String( children )}</CodeBlock>
             },
-            link(href, text) {
-                const citationIndex = citationLinks.findIndex(link => link.link === href);
-                if (citationIndex !== -1) {
+            link( href, text ) {
+                const citationIndex = citationLinks.findIndex( link => link.link === href )
+                if ( citationIndex !== -1 ) {
                     return (
                         <sup>
-                            {renderHoverCard(href, citationIndex + 1, true)}
+                            {renderHoverCard( href, citationIndex + 1, true )}
                         </sup>
-                    );
+                    )
                 }
-                return isValidUrl(href)
-                    ? renderHoverCard(href, text)
-                    : <a href={href} className="text-blue-600 dark:text-blue-400 hover:underline">{text}</a>;
+                return isValidUrl( href )
+                    ? renderHoverCard( href, text )
+                    : <a href={href} className="text-blue-600 dark:text-blue-400 hover:underline">{text}</a>
             },
-            heading(children, level) {
-                const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
-                const className = `text-${4 - level}xl font-bold my-4 text-neutral-800 dark:text-neutral-100`;
-                return <HeadingTag className={className}>{children}</HeadingTag>;
+            heading( children, level ) {
+                const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements
+                const className = `text-${4 - level}xl font-bold my-4 text-neutral-800 dark:text-neutral-100`
+                return <HeadingTag className={className}>{children}</HeadingTag>
             },
-            list(children, ordered) {
-                const ListTag = ordered ? 'ol' : 'ul';
-                return <ListTag className="list-inside list-disc my-4 pl-4 text-neutral-800 dark:text-neutral-200">{children}</ListTag>;
+            list( children, ordered ) {
+                const ListTag = ordered ? 'ol' : 'ul'
+                return <ListTag className="list-inside list-disc my-4 pl-4 text-neutral-800 dark:text-neutral-200">{children}</ListTag>
             },
-            listItem(children) {
-                return <li className="my-2 text-neutral-800 dark:text-neutral-200">{children}</li>;
+            listItem( children ) {
+                return <li className="my-2 text-neutral-800 dark:text-neutral-200">{children}</li>
             },
-            blockquote(children) {
-                return <blockquote className="border-l-4 border-neutral-300 dark:border-neutral-600 pl-4 italic my-4 text-neutral-700 dark:text-neutral-300">{children}</blockquote>;
+            blockquote( children ) {
+                return <blockquote className="border-l-4 border-neutral-300 dark:border-neutral-600 pl-4 italic my-4 text-neutral-700 dark:text-neutral-300">{children}</blockquote>
             },
-        };
+        }
 
         return (
             <div className="markdown-body dark:text-neutral-200 font-sans">
                 <Marked renderer={renderer}>{content}</Marked>
             </div>
-        );
-    };
+        )
+    }
 
 
-    const lastUserMessageIndex = useMemo(() => {
-        for (let i = messages.length - 1; i >= 0; i--) {
-            if (messages[i].role === 'user') {
-                return i;
+    const lastUserMessageIndex = useMemo( () => {
+        for ( let i = messages.length - 1; i >= 0; i-- ) {
+            if ( messages[i].role === 'user' ) {
+                return i
             }
         }
-        return -1;
-    }, [messages]);
+        return -1
+    }, [messages] )
 
-    useEffect(() => {
+    useEffect( () => {
         const handleScroll = () => {
-            const userScrolled = window.innerHeight + window.scrollY < document.body.offsetHeight;
-            if (!userScrolled && bottomRef.current && (messages.length > 0 || suggestedQuestions.length > 0)) {
-                bottomRef.current.scrollIntoView({ behavior: "smooth" });
+            const userScrolled = window.innerHeight + window.scrollY < document.body.offsetHeight
+            if ( !userScrolled && bottomRef.current && ( messages.length > 0 || suggestedQuestions.length > 0 ) ) {
+                bottomRef.current.scrollIntoView( { behavior: "smooth" } )
             }
-        };
+        }
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [messages, suggestedQuestions]);
+        window.addEventListener( 'scroll', handleScroll )
+        return () => window.removeEventListener( 'scroll', handleScroll )
+    }, [messages, suggestedQuestions] )
 
-    const handleExampleClick = async (card: TrendingQuery) => {
-        const exampleText = card.text;
-        lastSubmittedQueryRef.current = exampleText;
-        setHasSubmitted(true);
-        setSuggestedQuestions([]);
-        await append({
+    const handleExampleClick = async ( card: TrendingQuery ) => {
+        const exampleText = card.text
+        lastSubmittedQueryRef.current = exampleText
+        setHasSubmitted( true )
+        setSuggestedQuestions( [] )
+        await append( {
             content: exampleText.trim(),
             role: 'user',
-        });
-    };
+        } )
+    }
 
-    const handleSuggestedQuestionClick = useCallback(async (question: string) => {
-        setHasSubmitted(true);
-        setSuggestedQuestions([]);
+    const handleSuggestedQuestionClick = useCallback( async ( question: string ) => {
+        setHasSubmitted( true )
+        setSuggestedQuestions( [] )
 
-        await append({
+        await append( {
             content: question.trim(),
             role: 'user'
-        });
-    }, [append]);
+        } )
+    }, [append] )
 
-    const handleMessageEdit = useCallback((index: number) => {
-        setIsEditingMessage(true);
-        setEditingMessageIndex(index);
-        setInput(messages[index].content);
-    }, [messages, setInput]);
+    const handleMessageEdit = useCallback( ( index: number ) => {
+        setIsEditingMessage( true )
+        setEditingMessageIndex( index )
+        setInput( messages[index].content )
+    }, [messages, setInput] )
 
-    const handleMessageUpdate = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (input.trim()) {
+    const handleMessageUpdate = useCallback( ( e: React.FormEvent<HTMLFormElement> ) => {
+        e.preventDefault()
+        if ( input.trim() ) {
             // Create new messages array up to the edited message
-            const newMessages = messages.slice(0, editingMessageIndex + 1);
+            const newMessages = messages.slice( 0, editingMessageIndex + 1 )
             // Update the edited message
-            newMessages[editingMessageIndex] = { ...newMessages[editingMessageIndex], content: input.trim() };
+            newMessages[editingMessageIndex] = { ...newMessages[editingMessageIndex], content: input.trim() }
             // Set the new messages array
-            setMessages(newMessages);
+            setMessages( newMessages )
             // Reset editing state
-            setIsEditingMessage(false);
-            setEditingMessageIndex(-1);
+            setIsEditingMessage( false )
+            setEditingMessageIndex( -1 )
             // Store the edited message for reference
-            lastSubmittedQueryRef.current = input.trim();
+            lastSubmittedQueryRef.current = input.trim()
             // Clear input
-            setInput('');
+            setInput( '' )
             // Reset suggested questions
-            setSuggestedQuestions([]);
+            setSuggestedQuestions( [] )
             // Trigger a new chat completion without appending
-            reload();
+            reload()
         } else {
-            toast.error("Please enter a valid message.");
+            toast.error( "Please enter a valid message." )
         }
-    }, [input, messages, editingMessageIndex, setMessages, reload]);
+    }, [input, messages, editingMessageIndex, setMessages, reload] )
 
     const AboutButton = () => {
         return (
@@ -1208,8 +1209,8 @@ const HomeContent = () => {
                     <Info className="h-5 w-5 text-neutral-600 dark:text-neutral-400" />
                 </Button>
             </Link>
-        );
-    };
+        )
+    }
 
     interface NavbarProps { }
 
@@ -1235,73 +1236,62 @@ const HomeContent = () => {
                     </Link>
                 </div>
                 <div className='flex items-center space-x-4'>
-                    <Link
-                        target="_blank"
-                        href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fzaidmukaddam%2Fscira&env=XAI_API_KEY,AZURE_RESOURCE_NAME,AZURE_API_KEY,OPENAI_API_KEY,ANTHROPIC_API_KEY,CEREBRAS_API_KEY,GROQ_API_KEY,E2B_API_KEY,UPSTASH_REDIS_REST_URL,UPSTASH_REDIS_REST_TOKEN,ELEVENLABS_API_KEY,TAVILY_API_KEY,EXA_API_KEY,TMDB_API_KEY,YT_ENDPOINT,FIRECRAWL_API_KEY,OPENWEATHER_API_KEY,SANDBOX_TEMPLATE_ID,GOOGLE_MAPS_API_KEY,MAPBOX_ACCESS_TOKEN,TRIPADVISOR_API_KEY,AVIATION_STACK_API_KEY,CRON_SECRET,BLOB_READ_WRITE_TOKEN,NEXT_PUBLIC_MAPBOX_TOKEN,NEXT_PUBLIC_POSTHOG_KEY,NEXT_PUBLIC_POSTHOG_HOST,NEXT_PUBLIC_GOOGLE_MAPS_API_KEY&envDescription=API%20keys%20and%20configuration%20required%20for%20Scira%20to%20function"
-                        className="flex flex-row gap-2 items-center py-1.5 px-2 rounded-md 
-                            bg-accent hover:bg-accent/80
-                            backdrop-blur-sm text-foreground shadow-sm text-sm
-                            transition-all duration-200"
-                    >
-                        <VercelIcon size={14} />
-                        <span className='hidden sm:block'>Deploy with Vercel</span>
-                        <span className='sm:hidden block'>Deploy</span>
-                    </Link>
+                    <UserButton />
                     <AboutButton />
                     <ThemeToggle />
                 </div>
             </div>
-        );
-    };
+        )
+    }
 
     const SuggestionCards: React.FC<{
-        trendingQueries: TrendingQuery[];
-        handleExampleClick: (query: TrendingQuery) => void;
-    }> = ({ trendingQueries, handleExampleClick }) => {
-        const [isLoading, setIsLoading] = useState(true);
-        const scrollRef = useRef<HTMLDivElement>(null);
-        const [isPaused, setIsPaused] = useState(false);
-        const animationFrameRef = useRef<number>();
-        const lastScrollTime = useRef<number>(0);
+        trendingQueries: TrendingQuery[]
+        handleExampleClick: ( query: TrendingQuery ) => void
+    }> = ( { trendingQueries, handleExampleClick } ) => {
+        const [isLoading, setIsLoading] = useState( true )
+        const scrollRef = useRef<HTMLDivElement>( null )
+        const [isPaused, setIsPaused] = useState( false )
+        const animationFrameRef = useRef<number>()
+        const lastScrollTime = useRef<number>( 0 )
 
-        useEffect(() => {
-            if (trendingQueries.length > 0) {
-                setIsLoading(false);
+        useEffect( () => {
+            if ( trendingQueries.length > 0 ) {
+                setIsLoading( false )
             }
-        }, [trendingQueries]);
+        }, [trendingQueries] )
 
-        useEffect(() => {
-            const animate = (timestamp: number) => {
-                if (!scrollRef.current || isPaused) {
-                    animationFrameRef.current = requestAnimationFrame(animate);
-                    return;
+        useEffect( () => {
+            const animate = ( timestamp: number ) => {
+                if ( !scrollRef.current || isPaused ) {
+                    animationFrameRef.current = requestAnimationFrame( animate )
+                    return
                 }
 
-                if (timestamp - lastScrollTime.current > 16) {
-                    const newScrollLeft = scrollRef.current.scrollLeft + 1;
+                if ( timestamp - lastScrollTime.current > 16 ) {
+                    const newScrollLeft = scrollRef.current.scrollLeft + 1
 
-                    if (newScrollLeft >= scrollRef.current.scrollWidth - scrollRef.current.clientWidth) {
-                        scrollRef.current.scrollLeft = 0;
+                    if ( newScrollLeft >= scrollRef.current.scrollWidth - scrollRef.current.clientWidth ) {
+                        scrollRef.current.scrollLeft = 0
                     } else {
-                        scrollRef.current.scrollLeft = newScrollLeft;
+                        scrollRef.current.scrollLeft = newScrollLeft
                     }
 
-                    lastScrollTime.current = timestamp;
+                    lastScrollTime.current = timestamp
                 }
 
-                animationFrameRef.current = requestAnimationFrame(animate);
-            };
+                animationFrameRef.current = requestAnimationFrame( animate )
+            }
 
-            animationFrameRef.current = requestAnimationFrame(animate);
+            animationFrameRef.current = requestAnimationFrame( animate )
 
             return () => {
-                if (animationFrameRef.current) {
-                    cancelAnimationFrame(animationFrameRef.current);
+                if ( animationFrameRef.current ) {
+                    cancelAnimationFrame( animationFrameRef.current )
                 }
-            };
-        }, [isPaused]);
+            }
+        }, [isPaused] )
 
-        const getIconForCategory = (category: string) => {
+        const getIconForCategory = ( category: string ) => {
             const iconMap = {
                 trending: <TrendingUp className="w-3 h-3" />,
                 community: <Users className="w-3 h-3" />,
@@ -1313,11 +1303,11 @@ const HomeContent = () => {
                 sports: <TennisBall className="w-3 h-3" />,
                 finance: <CurrencyDollar className="w-3 h-3" />,
                 football: <SoccerBall className="w-3 h-3" />,
-            };
-            return iconMap[category as keyof typeof iconMap] || <Sparkles className="w-3 h-3" />;
-        };
+            }
+            return iconMap[category as keyof typeof iconMap] || <Sparkles className="w-3 h-3" />
+        }
 
-        if (isLoading || trendingQueries.length === 0) {
+        if ( isLoading || trendingQueries.length === 0 ) {
             return (
                 <div className="mt-4 relative">
                     <div className="relative">
@@ -1325,7 +1315,7 @@ const HomeContent = () => {
                         <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-background to-transparent z-10" />
 
                         <div className="flex gap-2 overflow-x-auto pb-2 px-2 scroll-smooth no-scrollbar">
-                            {[1, 2, 3, 4, 5, 6].map((_, index) => (
+                            {[1, 2, 3, 4, 5, 6].map( ( _, index ) => (
                                 <div
                                     key={index}
                                     className="flex-shrink-0 h-12 w-[120px] rounded-lg bg-neutral-50/80 dark:bg-neutral-800/80 
@@ -1340,11 +1330,11 @@ const HomeContent = () => {
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                            ) )}
                         </div>
                     </div>
                 </div>
-            );
+            )
         }
 
         return (
@@ -1360,25 +1350,25 @@ const HomeContent = () => {
                     <div
                         ref={scrollRef}
                         className="flex gap-2 overflow-x-auto pb-2 px-2 scroll-smooth no-scrollbar"
-                        onTouchStart={() => setIsPaused(true)}
+                        onTouchStart={() => setIsPaused( true )}
                         onTouchEnd={() => {
                             // Add a small delay before resuming animation on mobile
-                            setTimeout(() => setIsPaused(false), 1000);
+                            setTimeout( () => setIsPaused( false ), 1000 )
                         }}
-                        onMouseEnter={() => setIsPaused(true)}
-                        onMouseLeave={() => setIsPaused(false)}
+                        onMouseEnter={() => setIsPaused( true )}
+                        onMouseLeave={() => setIsPaused( false )}
                     >
-                        {Array(20).fill(trendingQueries).flat().map((query, index) => (
+                        {Array( 20 ).fill( trendingQueries ).flat().map( ( query, index ) => (
                             <motion.button
                                 key={`${index}-${query.text}`}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{
                                     duration: 0.2,
-                                    delay: Math.min(index * 0.02, 0.5), // Cap the maximum delay
+                                    delay: Math.min( index * 0.02, 0.5 ), // Cap the maximum delay
                                     ease: "easeOut"
                                 }}
-                                onClick={() => handleExampleClick(query)}
+                                onClick={() => handleExampleClick( query )}
                                 className="group flex-shrink-0 w-[120px] h-12 bg-neutral-50/80 dark:bg-neutral-800/80
                                          backdrop-blur-sm rounded-lg
                                          hover:bg-white dark:hover:bg-neutral-700/70
@@ -1389,7 +1379,7 @@ const HomeContent = () => {
                             >
                                 <div className="flex items-start gap-1.5 h-full p-2">
                                     <div className="w-5 h-5 rounded-md bg-primary/10 dark:bg-primary/20 flex items-center justify-center mt-0.5">
-                                        {getIconForCategory(query.category)}
+                                        {getIconForCategory( query.category )}
                                     </div>
                                     <div className="flex-1 text-left overflow-hidden">
                                         <p className="text-xs font-medium truncate leading-tight">{query.text}</p>
@@ -1399,74 +1389,74 @@ const HomeContent = () => {
                                     </div>
                                 </div>
                             </motion.button>
-                        ))}
+                        ) )}
                     </div>
                 </div>
             </motion.div>
-        );
-    };
+        )
+    }
 
-    const handleModelChange = useCallback((newModel: string) => {
-        setSelectedModel(newModel);
-        setSuggestedQuestions([]);
-        reload({ body: { model: newModel } });
-    }, [reload]);
+    const handleModelChange = useCallback( ( newModel: string ) => {
+        setSelectedModel( newModel )
+        setSuggestedQuestions( [] )
+        reload( { body: { model: newModel } } )
+    }, [reload] )
 
-    const resetSuggestedQuestions = useCallback(() => {
-        setSuggestedQuestions([]);
-    }, []);
+    const resetSuggestedQuestions = useCallback( () => {
+        setSuggestedQuestions( [] )
+    }, [] )
 
 
-    const memoizedMessages = useMemo(() => {
+    const memoizedMessages = useMemo( () => {
         // Create a shallow copy
-        const msgs = [...messages];
+        const msgs = [...messages]
 
-        return msgs.filter((message) => {
+        return msgs.filter( ( message ) => {
             // Keep all user messages
-            if (message.role === 'user') return true;
+            if ( message.role === 'user' ) return true
 
             // For assistant messages
-            if (message.role === 'assistant') {
+            if ( message.role === 'assistant' ) {
                 // Keep messages that have tool invocations
-                if (message.parts?.some(part => part.type === 'tool-invocation')) {
-                    return true;
+                if ( message.parts?.some( part => part.type === 'tool-invocation' ) ) {
+                    return true
                 }
                 // Keep messages that have text parts but no tool invocations
-                if (message.parts?.some(part => part.type === 'text') ||
-                    !message.parts?.some(part => part.type === 'tool-invocation')) {
-                    return true;
+                if ( message.parts?.some( part => part.type === 'text' ) ||
+                    !message.parts?.some( part => part.type === 'tool-invocation' ) ) {
+                    return true
                 }
-                return false;
+                return false
             }
-            return false;
-        });
-    }, [messages]);
+            return false
+        } )
+    }, [messages] )
 
-    const memoizedSuggestionCards = useMemo(() => (
+    const memoizedSuggestionCards = useMemo( () => (
         <SuggestionCards
             trendingQueries={trendingQueries}
             handleExampleClick={handleExampleClick}
         />
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    ), [trendingQueries]);
+    ), [trendingQueries] )
 
     // Track visibility state for each reasoning section using messageIndex-partIndex as key
-    const [reasoningVisibilityMap, setReasoningVisibilityMap] = useState<Record<string, boolean>>({});
+    const [reasoningVisibilityMap, setReasoningVisibilityMap] = useState<Record<string, boolean>>( {} )
 
     const renderPart = (
         part: TextUIPart | ReasoningUIPart | ToolInvocationUIPart,
         messageIndex: number,
         partIndex: number,
-        parts: (TextUIPart | ReasoningUIPart | ToolInvocationUIPart)[],
+        parts: ( TextUIPart | ReasoningUIPart | ToolInvocationUIPart )[],
         message: any,
         data?: any[]
     ) => {
-        if (part.type === "text" && partIndex === 0 &&
-            parts.some((p, i) => i > partIndex && p.type === 'tool-invocation')) {
-            return null;
+        if ( part.type === "text" && partIndex === 0 &&
+            parts.some( ( p, i ) => i > partIndex && p.type === 'tool-invocation' ) ) {
+            return null
         }
 
-        switch (part.type) {
+        switch ( part.type ) {
             case "text":
                 return (
                     <div key={`${messageIndex}-${partIndex}-text`}>
@@ -1483,17 +1473,17 @@ const HomeContent = () => {
                         </div>
                         <MarkdownRenderer content={part.text} />
                     </div>
-                );
+                )
             case "reasoning": {
-                const sectionKey = `${messageIndex}-${partIndex}`;
-                const isComplete = parts[partIndex + 1]?.type === "text";
-                
+                const sectionKey = `${messageIndex}-${partIndex}`
+                const isComplete = parts[partIndex + 1]?.type === "text"
+
                 // Auto-expand completed reasoning sections if not manually toggled
-                if (isComplete && reasoningVisibilityMap[sectionKey] === undefined) {
-                    setReasoningVisibilityMap(prev => ({
+                if ( isComplete && reasoningVisibilityMap[sectionKey] === undefined ) {
+                    setReasoningVisibilityMap( prev => ( {
                         ...prev,
                         [sectionKey]: true
-                    }));
+                    } ) )
                 }
 
                 return (
@@ -1503,10 +1493,10 @@ const HomeContent = () => {
                         className="mb-4"
                     >
                         <button
-                            onClick={() => setReasoningVisibilityMap(prev => ({
+                            onClick={() => setReasoningVisibilityMap( prev => ( {
                                 ...prev,
                                 [sectionKey]: !prev[sectionKey]
-                            }))}
+                            } ) )}
                             className="flex items-center justify-between w-full group text-left px-4 py-2 
                                 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 
                                 border border-neutral-200 dark:border-neutral-800 
@@ -1519,7 +1509,7 @@ const HomeContent = () => {
                                 </div>
                                 <span className="text-sm text-neutral-600 dark:text-neutral-400">
                                     {isComplete
-                                        ? "Reasoned" 
+                                        ? "Reasoned"
                                         : "Reasoning"}
                                 </span>
                             </div>
@@ -1550,7 +1540,7 @@ const HomeContent = () => {
                             )}
                         </AnimatePresence>
                     </motion.div>
-                );
+                )
             }
             case "tool-invocation":
                 return (
@@ -1560,11 +1550,11 @@ const HomeContent = () => {
                         message={message}
                         data={data}
                     />
-                );
+                )
             default:
-                return null;
+                return null
         }
-    };
+    }
 
     return (
         <div className="flex flex-col !font-sans items-center min-h-screen bg-background text-foreground transition-all duration-500">
@@ -1618,7 +1608,7 @@ const HomeContent = () => {
                     </AnimatePresence>
 
                     <div className="space-y-4 sm:space-y-6 mb-32">
-                        {memoizedMessages.map((message, index) => (
+                        {memoizedMessages.map( ( message, index ) => (
                             <div key={index}>
                                 {message.role === 'user' && (
                                     <motion.div
@@ -1634,7 +1624,7 @@ const HomeContent = () => {
                                                     <div className="relative flex items-center">
                                                         <Input
                                                             value={input}
-                                                            onChange={(e) => setInput(e.target.value)}
+                                                            onChange={( e ) => setInput( e.target.value )}
                                                             className="pr-20 h-8 text-sm bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
                                                             placeholder="Edit your message..."
                                                         />
@@ -1644,9 +1634,9 @@ const HomeContent = () => {
                                                                 variant="ghost"
                                                                 size="icon"
                                                                 onClick={() => {
-                                                                    setIsEditingMessage(false);
-                                                                    setEditingMessageIndex(-1);
-                                                                    setInput('');
+                                                                    setIsEditingMessage( false )
+                                                                    setEditingMessageIndex( -1 )
+                                                                    setInput( '' )
                                                                 }}
                                                                 className="h-6 w-6"
                                                                 disabled={isLoading}
@@ -1672,9 +1662,9 @@ const HomeContent = () => {
                                                             {message.content}
                                                         </p>
                                                         <div className='flex flex-row gap-2'>
-                                                            {message.experimental_attachments?.map((attachment, attachmentIndex) => (
+                                                            {message.experimental_attachments?.map( ( attachment, attachmentIndex ) => (
                                                                 <div key={attachmentIndex} className="mt-2">
-                                                                    {attachment.contentType!.startsWith('image/') && (
+                                                                    {attachment.contentType!.startsWith( 'image/' ) && (
                                                                         <img
                                                                             src={attachment.url}
                                                                             alt={attachment.name || `Attachment ${attachmentIndex + 1}`}
@@ -1682,14 +1672,14 @@ const HomeContent = () => {
                                                                         />
                                                                     )}
                                                                 </div>
-                                                            ))}
+                                                            ) )}
                                                         </div>
                                                     </div>
                                                     {!isEditingMessage && index === lastUserMessageIndex && (
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            onClick={() => handleMessageEdit(index)}
+                                                            onClick={() => handleMessageEdit( index )}
                                                             className="h-6 w-6 text-neutral-500 dark:text-neutral-400 hover:text-primary flex-shrink-0"
                                                             disabled={isLoading}
                                                         >
@@ -1702,18 +1692,18 @@ const HomeContent = () => {
                                     </motion.div>
                                 )}
 
-                                {message.role === 'assistant' && message.parts?.map((part, partIndex) =>
+                                {message.role === 'assistant' && message.parts?.map( ( part, partIndex ) =>
                                     renderPart(
                                         part as TextUIPart | ReasoningUIPart | ToolInvocationUIPart,
                                         index,
                                         partIndex,
-                                        message.parts as (TextUIPart | ReasoningUIPart | ToolInvocationUIPart)[],
+                                        message.parts as ( TextUIPart | ReasoningUIPart | ToolInvocationUIPart )[],
                                         message,
                                         data
                                     )
                                 )}
                             </div>
-                        ))}
+                        ) )}
                         {suggestedQuestions.length > 0 && (
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
@@ -1727,16 +1717,16 @@ const HomeContent = () => {
                                     <h2 className="font-semibold text-base text-neutral-800 dark:text-neutral-200">Suggested questions</h2>
                                 </div>
                                 <div className="space-y-2 flex flex-col">
-                                    {suggestedQuestions.map((question, index) => (
+                                    {suggestedQuestions.map( ( question, index ) => (
                                         <Button
                                             key={index}
                                             variant="ghost"
                                             className="w-fit font-medium rounded-2xl p-1 justify-start text-left h-auto py-2 px-4 bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-200 dark:hover:bg-neutral-700 whitespace-normal"
-                                            onClick={() => handleSuggestedQuestionClick(question)}
+                                            onClick={() => handleSuggestedQuestionClick( question )}
                                         >
                                             {question}
                                         </Button>
-                                    ))}
+                                    ) )}
                                 </div>
                             </motion.div>
                         )}
@@ -1805,7 +1795,7 @@ const HomeContent = () => {
                 )}
             </div>
         </div>
-    );
+    )
 }
 
 const LoadingFallback = () => (
@@ -1821,31 +1811,31 @@ const LoadingFallback = () => (
             </p>
         </div>
     </div>
-);
+)
 
 const ToolInvocationListView = memo(
-    ({ toolInvocations, message, data }: { 
-        toolInvocations: ToolInvocation[], 
+    ( { toolInvocations, message, data }: {
+        toolInvocations: ToolInvocation[],
         message: any,
         data?: any[]
-    }) => {
+    } ) => {
 
         const renderToolInvocation = useCallback(
-            (toolInvocation: ToolInvocation, index: number) => {
-                const args = JSON.parse(JSON.stringify(toolInvocation.args));
-                const result = 'result' in toolInvocation ? JSON.parse(JSON.stringify(toolInvocation.result)) : null;
+            ( toolInvocation: ToolInvocation, index: number ) => {
+                const args = JSON.parse( JSON.stringify( toolInvocation.args ) )
+                const result = 'result' in toolInvocation ? JSON.parse( JSON.stringify( toolInvocation.result ) ) : null
 
-                if (toolInvocation.toolName === 'find_place') {
-                    if (!result) {
+                if ( toolInvocation.toolName === 'find_place' ) {
+                    if ( !result ) {
                         return <SearchLoadingState
                             icon={MapPin}
                             text="Finding locations..."
                             color="blue"
-                        />;
+                        />
                     }
 
-                    const { features } = result;
-                    if (!features || features.length === 0) return null;
+                    const { features } = result
+                    if ( !features || features.length === 0 ) return null
 
                     return (
                         <Card className="w-full my-4 overflow-hidden bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800">
@@ -1864,21 +1854,21 @@ const ToolInvocationListView = memo(
                                         lat: features[0].geometry.coordinates[1],
                                         lng: features[0].geometry.coordinates[0],
                                     }}
-                                    places={features.map((feature: any) => ({
+                                    places={features.map( ( feature: any ) => ( {
                                         name: feature.name,
                                         location: {
                                             lat: feature.geometry.coordinates[1],
                                             lng: feature.geometry.coordinates[0],
                                         },
                                         vicinity: feature.formatted_address,
-                                    }))}
+                                    } ) )}
                                     zoom={features.length > 1 ? 12 : 15}
                                 />
                             </div>
 
                             <div className="max-h-[300px] overflow-y-auto border-t border-neutral-200 dark:border-neutral-800">
-                                {features.map((place: any, index: any) => {
-                                    const isGoogleResult = place.source === 'google';
+                                {features.map( ( place: any, index: any ) => {
+                                    const isGoogleResult = place.source === 'google'
 
                                     return (
                                         <div
@@ -1909,7 +1899,7 @@ const ToolInvocationListView = memo(
                                                         </p>
                                                     )}
                                                     <Badge variant="secondary" className="mt-2">
-                                                        {place.feature_type.replace(/_/g, ' ')}
+                                                        {place.feature_type.replace( /_/g, ' ' )}
                                                     </Badge>
                                                 </div>
 
@@ -1921,9 +1911,9 @@ const ToolInvocationListView = memo(
                                                                     size="icon"
                                                                     variant="outline"
                                                                     onClick={() => {
-                                                                        const coords = `${place.geometry.coordinates[1]},${place.geometry.coordinates[0]}`;
-                                                                        navigator.clipboard.writeText(coords);
-                                                                        toast.success("Coordinates copied!");
+                                                                        const coords = `${place.geometry.coordinates[1]},${place.geometry.coordinates[0]}`
+                                                                        navigator.clipboard.writeText( coords )
+                                                                        toast.success( "Coordinates copied!" )
                                                                     }}
                                                                     className="h-10 w-10"
                                                                 >
@@ -1943,8 +1933,8 @@ const ToolInvocationListView = memo(
                                                                     onClick={() => {
                                                                         const url = isGoogleResult
                                                                             ? `https://www.google.com/maps/place/?q=place_id:${place.place_id}`
-                                                                            : `https://www.google.com/maps/search/?api=1&query=${place.geometry.coordinates[1]},${place.geometry.coordinates[0]}`;
-                                                                        window.open(url, '_blank');
+                                                                            : `https://www.google.com/maps/search/?api=1&query=${place.geometry.coordinates[1]},${place.geometry.coordinates[0]}`
+                                                                        window.open( url, '_blank' )
                                                                     }}
                                                                     className="h-10 w-10"
                                                                 >
@@ -1957,62 +1947,62 @@ const ToolInvocationListView = memo(
                                                 </div>
                                             </div>
                                         </div>
-                                    );
-                                })}
+                                    )
+                                } )}
                             </div>
                         </Card>
-                    );
+                    )
                 }
 
-                if (toolInvocation.toolName === 'movie_or_tv_search') {
-                    if (!result) {
+                if ( toolInvocation.toolName === 'movie_or_tv_search' ) {
+                    if ( !result ) {
                         return <SearchLoadingState
                             icon={Film}
                             text="Discovering entertainment content..."
                             color="violet"
-                        />;
+                        />
                     }
 
-                    return <TMDBResult result={result} />;
+                    return <TMDBResult result={result} />
                 }
 
-                if (toolInvocation.toolName === 'trending_movies') {
-                    if (!result) {
+                if ( toolInvocation.toolName === 'trending_movies' ) {
+                    if ( !result ) {
                         return <SearchLoadingState
                             icon={Film}
                             text="Loading trending movies..."
                             color="blue"
-                        />;
+                        />
                     }
-                    return <TrendingResults result={result} type="movie" />;
+                    return <TrendingResults result={result} type="movie" />
                 }
 
-                if (toolInvocation.toolName === 'trending_tv') {
-                    if (!result) {
+                if ( toolInvocation.toolName === 'trending_tv' ) {
+                    if ( !result ) {
                         return <SearchLoadingState
                             icon={Tv}
                             text="Loading trending TV shows..."
                             color="blue"
-                        />;
+                        />
                     }
-                    return <TrendingResults result={result} type="tv" />;
+                    return <TrendingResults result={result} type="tv" />
                 }
 
 
-                if (toolInvocation.toolName === 'x_search') {
-                    if (!result) {
+                if ( toolInvocation.toolName === 'x_search' ) {
+                    if ( !result ) {
                         return <SearchLoadingState
                             icon={XLogo}
                             text="Searching for latest news..."
                             color="gray"
-                        />;
+                        />
                     }
 
-                    const PREVIEW_COUNT = 3;
+                    const PREVIEW_COUNT = 3
 
-                    const FullTweetList = memo(() => (
+                    const FullTweetList = memo( () => (
                         <div className="grid gap-4 p-4 sm:max-w-[500px]">
-                            {result.map((post: XResult, index: number) => (
+                            {result.map( ( post: XResult, index: number ) => (
                                 <motion.div
                                     key={post.id}
                                     initial={{ opacity: 0, y: 20 }}
@@ -2022,11 +2012,11 @@ const ToolInvocationListView = memo(
                                 >
                                     <Tweet id={post.tweetId} />
                                 </motion.div>
-                            ))}
+                            ) )}
                         </div>
-                    ));
+                    ) )
 
-                    FullTweetList.displayName = 'FullTweetList';
+                    FullTweetList.displayName = 'FullTweetList'
 
                     return (
                         <Card className="w-full my-4 overflow-hidden shadow-none">
@@ -2046,7 +2036,7 @@ const ToolInvocationListView = memo(
                             <div className="relative">
                                 <div className="px-4 pb-2 h-72">
                                     <div className="flex flex-nowrap overflow-x-auto gap-4 no-scrollbar">
-                                        {result.slice(0, PREVIEW_COUNT).map((post: XResult, index: number) => (
+                                        {result.slice( 0, PREVIEW_COUNT ).map( ( post: XResult, index: number ) => (
                                             <motion.div
                                                 key={post.tweetId}
                                                 className="w-[min(100vw-2rem,320px)] flex-none"
@@ -2056,7 +2046,7 @@ const ToolInvocationListView = memo(
                                             >
                                                 <Tweet id={post.tweetId} />
                                             </motion.div>
-                                        ))}
+                                        ) )}
                                     </div>
                                 </div>
 
@@ -2107,19 +2097,19 @@ const ToolInvocationListView = memo(
                                 </div>
                             </div>
                         </Card>
-                    );
+                    )
                 }
 
-                if (toolInvocation.toolName === 'youtube_search') {
-                    if (!result) {
+                if ( toolInvocation.toolName === 'youtube_search' ) {
+                    if ( !result ) {
                         return <SearchLoadingState
                             icon={YoutubeIcon}
                             text="Searching YouTube videos..."
                             color="red"
-                        />;
+                        />
                     }
 
-                    const youtubeResult = result as YouTubeSearchResponse;
+                    const youtubeResult = result as YouTubeSearchResponse
 
                     return (
                         <Accordion type="single" defaultValue="videos" collapsible className="w-full">
@@ -2150,27 +2140,27 @@ const ToolInvocationListView = memo(
 
                                 <AccordionContent className="dark:bg-neutral-900 bg-white dark:border-neutral-800 border-gray-200 border border-t-0 rounded-b-xl">
                                     <div className="flex overflow-x-auto gap-3 p-3 no-scrollbar">
-                                        {youtubeResult.results.map((video, index) => (
+                                        {youtubeResult.results.map( ( video, index ) => (
                                             <YouTubeCard
                                                 key={video.videoId}
                                                 video={video}
                                                 index={index}
                                             />
-                                        ))}
+                                        ) )}
                                     </div>
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
-                    );
+                    )
                 }
 
-                if (toolInvocation.toolName === 'academic_search') {
-                    if (!result) {
+                if ( toolInvocation.toolName === 'academic_search' ) {
+                    if ( !result ) {
                         return <SearchLoadingState
                             icon={Book}
                             text="Searching academic papers..."
                             color="violet"
-                        />;
+                        />
                     }
 
                     return (
@@ -2188,7 +2178,7 @@ const ToolInvocationListView = memo(
                             </CardHeader>
                             <div className="px-4 pb-2">
                                 <div className="flex overflow-x-auto gap-4 no-scrollbar hover:overflow-x-scroll">
-                                    {result.results.map((paper: AcademicResult, index: number) => (
+                                    {result.results.map( ( paper: AcademicResult, index: number ) => (
                                         <motion.div
                                             key={paper.url || index}
                                             className="w-[400px] flex-none"
@@ -2209,10 +2199,10 @@ const ToolInvocationListView = memo(
                                                             <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-sm text-muted-foreground bg-neutral-100 dark:bg-neutral-800 rounded-md">
                                                                 <User2 className="h-3.5 w-3.5 text-violet-500" />
                                                                 <span className="line-clamp-1">
-                                                                    {paper.author.split(';')
-                                                                        .slice(0, 2)
-                                                                        .join(', ') +
-                                                                        (paper.author.split(';').length > 2 ? ' et al.' : '')
+                                                                    {paper.author.split( ';' )
+                                                                        .slice( 0, 2 )
+                                                                        .join( ', ' ) +
+                                                                        ( paper.author.split( ';' ).length > 2 ? ' et al.' : '' )
                                                                     }
                                                                 </span>
                                                             </div>
@@ -2223,7 +2213,7 @@ const ToolInvocationListView = memo(
                                                         <div className="mb-4">
                                                             <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-sm text-muted-foreground bg-neutral-100 dark:bg-neutral-800 rounded-md">
                                                                 <Calendar className="h-3.5 w-3.5 text-violet-500" />
-                                                                {new Date(paper.publishedDate).toLocaleDateString()}
+                                                                {new Date( paper.publishedDate ).toLocaleDateString()}
                                                             </div>
                                                         </div>
                                                     )}
@@ -2238,17 +2228,17 @@ const ToolInvocationListView = memo(
                                                     <div className="flex gap-2">
                                                         <Button
                                                             variant="ghost"
-                                                            onClick={() => window.open(paper.url, '_blank')}
+                                                            onClick={() => window.open( paper.url, '_blank' )}
                                                             className="flex-1 bg-neutral-100 dark:bg-neutral-800 hover:bg-violet-100 dark:hover:bg-violet-900/20 hover:text-violet-600 dark:hover:text-violet-400 group/btn"
                                                         >
                                                             <FileText className="h-4 w-4 mr-2 group-hover/btn:scale-110 transition-transform duration-300" />
                                                             View Paper
                                                         </Button>
 
-                                                        {paper.url.includes('arxiv.org') && (
+                                                        {paper.url.includes( 'arxiv.org' ) && (
                                                             <Button
                                                                 variant="ghost"
-                                                                onClick={() => window.open(paper.url.replace('abs', 'pdf'), '_blank')}
+                                                                onClick={() => window.open( paper.url.replace( 'abs', 'pdf' ), '_blank' )}
                                                                 className="bg-neutral-100 dark:bg-neutral-800 hover:bg-violet-100 dark:hover:bg-violet-900/20 hover:text-violet-600 dark:hover:text-violet-400 group/btn"
                                                             >
                                                                 <Download className="h-4 w-4 group-hover/btn:scale-110 transition-transform duration-300" />
@@ -2258,15 +2248,15 @@ const ToolInvocationListView = memo(
                                                 </div>
                                             </div>
                                         </motion.div>
-                                    ))}
+                                    ) )}
                                 </div>
                             </div>
                         </Card>
-                    );
+                    )
                 }
 
-                if (toolInvocation.toolName === 'nearby_search') {
-                    if (!result) {
+                if ( toolInvocation.toolName === 'nearby_search' ) {
+                    if ( !result ) {
                         return (
                             <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-2">
@@ -2276,7 +2266,7 @@ const ToolInvocationListView = memo(
                                     </span>
                                 </div>
                                 <motion.div className="flex space-x-1">
-                                    {[0, 1, 2].map((index) => (
+                                    {[0, 1, 2].map( ( index ) => (
                                         <motion.div
                                             key={index}
                                             className="w-2 h-2 bg-neutral-400 dark:bg-neutral-600 rounded-full"
@@ -2289,13 +2279,13 @@ const ToolInvocationListView = memo(
                                                 repeatType: "reverse",
                                             }}
                                         />
-                                    ))}
+                                    ) )}
                                 </motion.div>
                             </div>
-                        );
+                        )
                     }
 
-                    console.log(result);
+                    console.log( result )
 
                     return (
                         <div className="my-4">
@@ -2305,11 +2295,11 @@ const ToolInvocationListView = memo(
                                 type={args.type}
                             />
                         </div>
-                    );
+                    )
                 }
 
-                if (toolInvocation.toolName === 'text_search') {
-                    if (!result) {
+                if ( toolInvocation.toolName === 'text_search' ) {
+                    if ( !result ) {
                         return (
                             <div className="flex items-center justify-between w-full">
                                 <div className='flex items-center gap-2'>
@@ -2317,7 +2307,7 @@ const ToolInvocationListView = memo(
                                     <span className="text-neutral-700 dark:text-neutral-300 text-lg">Searching places...</span>
                                 </div>
                                 <motion.div className="flex space-x-1">
-                                    {[0, 1, 2].map((index) => (
+                                    {[0, 1, 2].map( ( index ) => (
                                         <motion.div
                                             key={index}
                                             className="w-2 h-2 bg-neutral-400 dark:bg-neutral-600 rounded-full"
@@ -2330,28 +2320,28 @@ const ToolInvocationListView = memo(
                                                 repeatType: "reverse",
                                             }}
                                         />
-                                    ))}
+                                    ) )}
                                 </motion.div>
                             </div>
-                        );
+                        )
                     }
 
-                    const centerLocation = result.results[0]?.geometry?.location;
+                    const centerLocation = result.results[0]?.geometry?.location
                     return (
                         <MapContainer
                             title="Search Results"
                             center={centerLocation}
-                            places={result.results.map((place: any) => ({
+                            places={result.results.map( ( place: any ) => ( {
                                 name: place.name,
                                 location: place.geometry.location,
                                 vicinity: place.formatted_address
-                            }))}
+                            } ) )}
                         />
-                    );
+                    )
                 }
 
-                if (toolInvocation.toolName === 'get_weather_data') {
-                    if (!result) {
+                if ( toolInvocation.toolName === 'get_weather_data' ) {
+                    if ( !result ) {
                         return (
                             <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-2">
@@ -2359,7 +2349,7 @@ const ToolInvocationListView = memo(
                                     <span className="text-neutral-700 dark:text-neutral-300 text-lg">Fetching weather data...</span>
                                 </div>
                                 <div className="flex space-x-1">
-                                    {[0, 1, 2].map((index) => (
+                                    {[0, 1, 2].map( ( index ) => (
                                         <motion.div
                                             key={index}
                                             className="w-2 h-2 bg-neutral-400 dark:bg-neutral-600 rounded-full"
@@ -2372,19 +2362,19 @@ const ToolInvocationListView = memo(
                                                 repeatType: "reverse",
                                             }}
                                         />
-                                    ))}
+                                    ) )}
                                 </div>
                             </div>
-                        );
+                        )
                     }
-                    return <WeatherChart result={result} />;
+                    return <WeatherChart result={result} />
                 }
 
-                if (toolInvocation.toolName === 'currency_converter') {
-                    return <CurrencyConverter toolInvocation={toolInvocation} result={result} />;
+                if ( toolInvocation.toolName === 'currency_converter' ) {
+                    return <CurrencyConverter toolInvocation={toolInvocation} result={result} />
                 }
 
-                if (toolInvocation.toolName === 'stock_chart') {
+                if ( toolInvocation.toolName === 'stock_chart' ) {
                     return (
                         <div className="flex flex-col gap-3 w-full mt-4">
                             <Badge
@@ -2417,10 +2407,10 @@ const ToolInvocationListView = memo(
                                 </div>
                             )}
                         </div>
-                    );
+                    )
                 }
 
-                if (toolInvocation.toolName === "code_interpreter") {
+                if ( toolInvocation.toolName === "code_interpreter" ) {
                     return (
                         <div className="space-y-6">
                             <CollapsibleSection
@@ -2438,32 +2428,32 @@ const ToolInvocationListView = memo(
                                 </div>
                             )}
                         </div>
-                    );
+                    )
                 }
 
-                if (toolInvocation.toolName === 'reason_search') {
-                    const updates = message?.annotations?.filter((a: any) => 
+                if ( toolInvocation.toolName === 'reason_search' ) {
+                    const updates = message?.annotations?.filter( ( a: any ) =>
                         a.type === 'research_update'
-                    ).map((a: any) => a.data);
-                    return <ReasonSearch updates={updates || []} />;
+                    ).map( ( a: any ) => a.data )
+                    return <ReasonSearch updates={updates || []} />
                 }
 
-                if (toolInvocation.toolName === 'web_search') {
+                if ( toolInvocation.toolName === 'web_search' ) {
                     return (
                         <div className="mt-4">
-                            <MultiSearch 
-                                result={result} 
-                                args={args} 
+                            <MultiSearch
+                                result={result}
+                                args={args}
                                 annotations={message?.annotations?.filter(
-                                    (a: any) => a.type === 'query_completion'
+                                    ( a: any ) => a.type === 'query_completion'
                                 ) || []}
                             />
                         </div>
-                    );
+                    )
                 }
 
-                if (toolInvocation.toolName === 'retrieve') {
-                    if (!result) {
+                if ( toolInvocation.toolName === 'retrieve' ) {
+                    if ( !result ) {
                         return (
                             <div className="border border-neutral-200 rounded-xl my-4 p-4 dark:border-neutral-800 bg-gradient-to-b from-white to-neutral-50 dark:from-neutral-900 dark:to-neutral-900/90">
                                 <div className="flex items-center gap-4">
@@ -2480,7 +2470,7 @@ const ToolInvocationListView = memo(
                                     </div>
                                 </div>
                             </div>
-                        );
+                        )
                     }
 
                     return (
@@ -2491,7 +2481,7 @@ const ToolInvocationListView = memo(
                                         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-lg" />
                                         <img
                                             className="h-5 w-5 absolute inset-0 m-auto"
-                                            src={`https://www.google.com/s2/favicons?sz=64&domain_url=${encodeURIComponent(result.results[0].url)}`}
+                                            src={`https://www.google.com/s2/favicons?sz=64&domain_url=${encodeURIComponent( result.results[0].url )}`}
                                             alt=""
                                         />
                                     </div>
@@ -2537,14 +2527,14 @@ const ToolInvocationListView = memo(
                                 </details>
                             </div>
                         </div>
-                    );
+                    )
                 }
-                if (toolInvocation.toolName === 'text_translate') {
-                    return <TranslationTool toolInvocation={toolInvocation} result={result} />;
+                if ( toolInvocation.toolName === 'text_translate' ) {
+                    return <TranslationTool toolInvocation={toolInvocation} result={result} />
                 }
 
-                if (toolInvocation.toolName === 'track_flight') {
-                    if (!result) {
+                if ( toolInvocation.toolName === 'track_flight' ) {
+                    if ( !result ) {
                         return (
                             <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-2">
@@ -2552,7 +2542,7 @@ const ToolInvocationListView = memo(
                                     <span className="text-neutral-700 dark:text-neutral-300 text-lg">Tracking flight...</span>
                                 </div>
                                 <div className="flex space-x-1">
-                                    {[0, 1, 2].map((index) => (
+                                    {[0, 1, 2].map( ( index ) => (
                                         <motion.div
                                             key={index}
                                             className="w-2 h-2 bg-neutral-400 dark:bg-neutral-600 rounded-full"
@@ -2565,92 +2555,92 @@ const ToolInvocationListView = memo(
                                                 repeatType: "reverse",
                                             }}
                                         />
-                                    ))}
+                                    ) )}
                                 </div>
                             </div>
-                        );
+                        )
                     }
 
-                    if (result.error) {
+                    if ( result.error ) {
                         return (
                             <div className="text-red-500 dark:text-red-400">
                                 Error tracking flight: {result.error}
                             </div>
-                        );
+                        )
                     }
 
                     return (
                         <div className="my-4">
                             <FlightTracker data={result} />
                         </div>
-                    );
+                    )
                 }
 
-                return null;
+                return null
             },
             [message]
-        );
+        )
 
-        const TranslationTool: React.FC<{ toolInvocation: ToolInvocation; result: any }> = ({ toolInvocation, result }) => {
-            const [isPlaying, setIsPlaying] = useState(false);
-            const [audioUrl, setAudioUrl] = useState<string | null>(null);
-            const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
-            const audioRef = useRef<HTMLAudioElement | null>(null);
-            const canvasRef = useRef<HTMLCanvasElement | null>(null);
-            const waveRef = useRef<Wave | null>(null);
+        const TranslationTool: React.FC<{ toolInvocation: ToolInvocation; result: any }> = ( { toolInvocation, result } ) => {
+            const [isPlaying, setIsPlaying] = useState( false )
+            const [audioUrl, setAudioUrl] = useState<string | null>( null )
+            const [isGeneratingAudio, setIsGeneratingAudio] = useState( false )
+            const audioRef = useRef<HTMLAudioElement | null>( null )
+            const canvasRef = useRef<HTMLCanvasElement | null>( null )
+            const waveRef = useRef<Wave | null>( null )
 
-            useEffect(() => {
+            useEffect( () => {
                 const _audioRef = audioRef.current
                 return () => {
-                    if (_audioRef) {
-                        _audioRef.pause();
-                        _audioRef.src = '';
+                    if ( _audioRef ) {
+                        _audioRef.pause()
+                        _audioRef.src = ''
                     }
-                };
-            }, []);
+                }
+            }, [] )
 
-            useEffect(() => {
-                if (audioUrl && audioRef.current && canvasRef.current) {
-                    waveRef.current = new Wave(audioRef.current, canvasRef.current);
-                    waveRef.current.addAnimation(new waveRef.current.animations.Lines({
+            useEffect( () => {
+                if ( audioUrl && audioRef.current && canvasRef.current ) {
+                    waveRef.current = new Wave( audioRef.current, canvasRef.current )
+                    waveRef.current.addAnimation( new waveRef.current.animations.Lines( {
                         lineColor: "rgb(203, 113, 93)",
                         lineWidth: 2,
                         mirroredY: true,
                         count: 100,
-                    }));
+                    } ) )
                 }
-            }, [audioUrl]);
+            }, [audioUrl] )
 
             const handlePlayPause = async () => {
-                if (!audioUrl && !isGeneratingAudio) {
-                    setIsGeneratingAudio(true);
+                if ( !audioUrl && !isGeneratingAudio ) {
+                    setIsGeneratingAudio( true )
                     try {
-                        const { audio } = await generateSpeech(result.translatedText, 'alloy');
-                        setAudioUrl(audio);
-                        setIsGeneratingAudio(false);
-                    } catch (error) {
-                        console.error("Error generating speech:", error);
-                        setIsGeneratingAudio(false);
+                        const { audio } = await generateSpeech( result.translatedText, 'alloy' )
+                        setAudioUrl( audio )
+                        setIsGeneratingAudio( false )
+                    } catch ( error ) {
+                        console.error( "Error generating speech:", error )
+                        setIsGeneratingAudio( false )
                     }
-                } else if (audioRef.current) {
-                    if (isPlaying) {
-                        audioRef.current.pause();
+                } else if ( audioRef.current ) {
+                    if ( isPlaying ) {
+                        audioRef.current.pause()
                     } else {
-                        audioRef.current.play();
+                        audioRef.current.play()
                     }
-                    setIsPlaying(!isPlaying);
+                    setIsPlaying( !isPlaying )
                 }
-            };
+            }
 
             const handleReset = () => {
-                if (audioRef.current) {
-                    audioRef.current.pause();
-                    audioRef.current.currentTime = 0;
-                    setIsPlaying(false);
+                if ( audioRef.current ) {
+                    audioRef.current.pause()
+                    audioRef.current.currentTime = 0
+                    setIsPlaying( false )
                 }
-            };
+            }
 
-            if (!result) {
+            if ( !result ) {
                 return (
                     <Card className="w-full my-4 bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700">
                         <CardContent className="flex items-center justify-center h-24">
@@ -2660,7 +2650,7 @@ const ToolInvocationListView = memo(
                             </div>
                         </CardContent>
                     </Card>
-                );
+                )
             }
 
             return (
@@ -2698,34 +2688,34 @@ const ToolInvocationListView = memo(
                         <audio
                             ref={audioRef}
                             src={audioUrl}
-                            onPlay={() => setIsPlaying(true)}
-                            onPause={() => setIsPlaying(false)}
-                            onEnded={() => { setIsPlaying(false); handleReset(); }}
+                            onPlay={() => setIsPlaying( true )}
+                            onPause={() => setIsPlaying( false )}
+                            onEnded={() => { setIsPlaying( false ); handleReset() }}
                         />
                     )}
                 </Card>
-            );
-        };
+            )
+        }
 
         return (
             <>
                 {toolInvocations.map(
-                    (toolInvocation: ToolInvocation, toolIndex: number) => (
+                    ( toolInvocation: ToolInvocation, toolIndex: number ) => (
                         <div key={`tool-${toolIndex}`}>
-                            {renderToolInvocation(toolInvocation, toolIndex)}
+                            {renderToolInvocation( toolInvocation, toolIndex )}
                         </div>
                     )
                 )}
             </>
-        );
+        )
     },
-    (prevProps, nextProps) => {
+    ( prevProps, nextProps ) => {
         return prevProps.toolInvocations === nextProps.toolInvocations &&
-               prevProps.message === nextProps.message;
+            prevProps.message === nextProps.message
     }
-);
+)
 
-ToolInvocationListView.displayName = 'ToolInvocationListView';
+ToolInvocationListView.displayName = 'ToolInvocationListView'
 
 const Home = () => {
     return (
@@ -2733,7 +2723,7 @@ const Home = () => {
             <HomeContent />
             <InstallPrompt />
         </Suspense>
-    );
-};
+    )
+}
 
-export default Home;
+export default Home

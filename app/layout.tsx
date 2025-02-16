@@ -1,16 +1,23 @@
-import { Analytics } from "@vercel/analytics/react";
-import { GeistSans } from 'geist/font/sans';
-import 'katex/dist/katex.min.css';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import { Metadata, Viewport } from "next";
-import { Instrument_Serif, Syne } from 'next/font/google';
-import { NuqsAdapter } from 'nuqs/adapters/next/app';
-import { Toaster } from "sonner";
-import "./globals.css";
-import { Providers } from './providers';
+import { Analytics } from "@vercel/analytics/react"
+import { GeistSans } from 'geist/font/sans'
+import 'katex/dist/katex.min.css'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import { Metadata, Viewport } from "next"
+import { Instrument_Serif, Syne } from 'next/font/google'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { Toaster } from "sonner"
+import "./globals.css"
+import { Providers } from './providers'
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton
+} from '@clerk/nextjs'
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://scira.app"),
+  metadataBase: new URL( "https://scira.app" ),
   title: "Scira",
   description: "Scira is a minimalistic AI-powered search engine that helps you find information on the internet.",
   openGraph: {
@@ -39,7 +46,7 @@ export const metadata: Metadata = {
     "AI",
     "perplexity",
   ]
-};
+}
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -53,29 +60,37 @@ export const viewport: Viewport = {
   ],
 }
 
-const syne = Syne({ 
-  subsets: ['latin'], 
+const syne = Syne( {
+  subsets: ['latin'],
   variable: '--font-syne',
-   preload: true,
+  preload: true,
   display: 'swap',
-});
+} )
 
-export default function RootLayout({
+export default function RootLayout( {
   children,
 }: Readonly<{
-  children: React.ReactNode;
-}>) {
+  children: React.ReactNode
+}> ) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${GeistSans.variable} ${syne.variable} font-sans antialiased`}>
-        <NuqsAdapter>
-          <Providers>
-            <Toaster position="top-center" richColors />
-            {children}
-          </Providers>
-        </NuqsAdapter>
-        <Analytics />
-      </body>
-    </html>
-  );
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${GeistSans.variable} ${syne.variable} font-sans antialiased`}>
+          <NuqsAdapter>
+            <Providers>
+              <Toaster position="top-center" richColors />
+              <SignedOut>
+                <SignInButton />
+              </SignedOut>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+              {children}
+            </Providers>
+          </NuqsAdapter>
+          <Analytics />
+        </body>
+      </html>
+    </ClerkProvider>
+  )
 }
