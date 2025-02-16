@@ -79,12 +79,12 @@ export default function RootLayout( {
           <NuqsAdapter>
             <Providers>
               <Toaster position="top-center" richColors />
-              <SignedOut>
+              {/* <SignedOut>
                 <SignInButton />
               </SignedOut>
               <SignedIn>
                 <UserButton />
-              </SignedIn>
+              </SignedIn> */}
               {children}
             </Providers>
           </NuqsAdapter>

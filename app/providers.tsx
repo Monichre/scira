@@ -1,9 +1,7 @@
 "use client"
 
-import { clientEnv } from "@/env/client"
 import { ThemeProvider } from "next-themes"
-import posthog from 'posthog-js'
-import { PostHogProvider } from 'posthog-js/react'
+
 import { ReactNode } from "react"
 
 
