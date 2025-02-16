@@ -469,7 +469,7 @@ export async function POST( req: Request ) {
                             query: z.string().describe( 'The search query for movies/TV shows' ),
                         } ),
                         execute: async ( { query }: { query: string } ) => {
-                            const TMDB_API_KEY = serverEnv.TMDB_API_KEY
+                            const TMDB_API_KEY = '' // serverEnv.TMDB_API_KEY
                             const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 
                             try {
@@ -1603,11 +1603,6 @@ export async function POST( req: Request ) {
                 },
             } )
 
-            result.consumeStream()
-
-            return result.mergeIntoDataStream( dataStream, {
-                sendReasoning: true
-            } )
         }
     } )
 }
